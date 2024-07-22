@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:montra/components/custom_button.dart';
 import 'package:montra/extensions/space_exs.dart';
 import 'package:montra/utils/app_colors.dart';
-import 'package:montra/utils/constants.dart';
 
-class ForgotPasswordEmailSent extends StatefulWidget {
-  const ForgotPasswordEmailSent({super.key});
+class SetupAccount extends StatefulWidget {
+  const SetupAccount({super.key});
 
   @override
-  State<ForgotPasswordEmailSent> createState() =>
-      _ForgotPasswordEmailSentState();
+  State<SetupAccount> createState() => _SetupAccountState();
 }
 
-class _ForgotPasswordEmailSentState extends State<ForgotPasswordEmailSent> {
+class _SetupAccountState extends State<SetupAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,21 +26,15 @@ class _ForgotPasswordEmailSentState extends State<ForgotPasswordEmailSent> {
           children: [
             Column(
               children: [
-                const Image(
-                  fit: BoxFit.fill,
-                  image: AssetImage(AppImages.onBoardingImage4),
-                  height: 212,
-                  width: 212,
-                ),
-                const Text("Your email is on the way"),
+                const Text("Let's setup your account!"),
                 10.h,
                 const Text(
-                    "Check your email test@test.com and follow the instructions to reset your password.")
+                    "Account can be your bank, credit card or your wallet.")
               ],
             ),
             CustomButton(
               bgColor: AppColors.primaryColor,
-              text: "Sign Up",
+              text: "Let's go",
               onPressed: () {},
               color: Colors.white,
             ),
