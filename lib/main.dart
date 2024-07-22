@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:montra/views/sign_up/sign_up.dart';
-import 'package:montra/views/sign_up/verification.dart';
+import 'package:montra/views/log_in/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const VerificationScreen(),
+      home: const LoginScreen(),
     );
   }
 }

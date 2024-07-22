@@ -23,4 +23,5 @@ class AppImages {
   static const String onBoardingImage1 = 'asset/img/1.png';
   static const String onBoardingImage2 = 'asset/img/2.png';
   static const String onBoardingImage3 = 'asset/img/3.png';
+  static const String onBoardingImage4 = 'asset/img/4.png';
 }
