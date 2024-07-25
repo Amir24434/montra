@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:montra/views/setup/setup_pin_2.dart';
+import 'package:montra/views/home/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SetupPin2(),
+      home: HomeScreen(),
     );
   }
 }
