@@ -1,16 +1,13 @@
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:montra/components/transaction_tile.dart';
+import 'package:montra/utils/app_colors.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   final data = <_SalesData>[
     _SalesData('Jan', 35),
     _SalesData('Feb', 28),
@@ -18,8 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _SalesData('Apr', 32),
     _SalesData('May', 40)
   ];
-
-  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: const Icon(
           Icons.person,
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        surfaceTintColor: Colors.white,
+        shadowColor: Colors.white,
         title: const Text(
           "Month",
           style: TextStyle(fontSize: 12),
@@ -46,6 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const ListTile(
+                leading: Icon(Icons.person),
+                title: Center(
+                  child: Text("Month"),
+                ),
+                trailing: Icon(
+                  Icons.notification_important,
+                  color: AppColors.primaryColor,
+                ),
+              ),
               const Text(
                 "Account Balance",
                 style: TextStyle(
@@ -198,50 +206,13 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: size.height * 0.02,
               ),
-              ListTile(
-                leading: Container(
-                  height: size.height * 0.05,
-                  width: size.width * 0.09,
-                  decoration: BoxDecoration(
-                    color: Colors.yellow[100],
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.yellow[700],
-                  ),
-                ),
-                title: const Text("Shopping"),
-                subtitle: const Text("Buy some grocery"),
-                trailing: Column(
-                  children: [
-                    const Text(
-                      "- \$120",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    const Text("10:00 AM"),
-                  ],
-                ),
-              ),
+              TransactionTile(size: size),
+              TransactionTile(size: size),
+              TransactionTile(size: size),
+              TransactionTile(size: size),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: FloatingNavbar(
-        onTap: (int val) => setState(() => _index = val),
-        currentIndex: _index,
-        items: [
-          FloatingNavbarItem(icon: Icons.home, title: 'Home'),
-          FloatingNavbarItem(icon: Icons.explore, title: 'Explore'),
-          FloatingNavbarItem(icon: Icons.chat_bubble_outline, title: 'Chats'),
-          FloatingNavbarItem(icon: Icons.settings, title: 'Settings'),
-        ],
       ),
     );
   }

@@ -1,262 +1,134 @@
-import 'dart:async';
-
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:circular_reveal_animation/circular_reveal_animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:montra/utils/app_colors.dart';
+import 'package:montra/views/home/home.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
-class MyAp extends StatelessWidget {
-  const MyAp({super.key});
+class BottomNav extends StatelessWidget {
+  const BottomNav({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'Animated Navigation Bottom Bar'),
+      title: 'Stylish Bottom Navigation Bar Example',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: const AnimatedBarExample(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class AnimatedBarExample extends StatefulWidget {
+  const AnimatedBarExample({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<AnimatedBarExample> createState() => _AnimatedBarExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  final autoSizeGroup = AutoSizeGroup();
-  var _bottomNavIndex = 0; //default index of a first screen
-
-  late AnimationController _fabAnimationController;
-  late AnimationController _borderRadiusAnimationController;
-  late Animation<double> fabAnimation;
-  late Animation<double> borderRadiusAnimation;
-  late CurvedAnimation fabCurve;
-  late CurvedAnimation borderRadiusCurve;
-  late AnimationController _hideBottomBarAnimationController;
-
-  final iconList = <IconData>[
-    Icons.brightness_5,
-    Icons.brightness_4,
-    Icons.brightness_6,
-    Icons.brightness_7,
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _fabAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _borderRadiusAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    fabCurve = CurvedAnimation(
-      parent: _fabAnimationController,
-      curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
-    );
-    borderRadiusCurve = CurvedAnimation(
-      parent: _borderRadiusAnimationController,
-      curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
-    );
-
-    fabAnimation = Tween<double>(begin: 0, end: 1).animate(fabCurve);
-    borderRadiusAnimation = Tween<double>(begin: 0, end: 1).animate(
-      borderRadiusCurve,
-    );
-
-    _hideBottomBarAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-
-    Future.delayed(
-      const Duration(seconds: 1),
-      () => _fabAnimationController.forward(),
-    );
-    Future.delayed(
-      const Duration(seconds: 1),
-      () => _borderRadiusAnimationController.forward(),
-    );
-  }
-
-  bool onScrollNotification(ScrollNotification notification) {
-    if (notification is UserScrollNotification &&
-        notification.metrics.axis == Axis.vertical) {
-      switch (notification.direction) {
-        case ScrollDirection.forward:
-          _hideBottomBarAnimationController.reverse();
-          _fabAnimationController.forward(from: 0);
-          break;
-        case ScrollDirection.reverse:
-          _hideBottomBarAnimationController.forward();
-          _fabAnimationController.reverse(from: 1);
-          break;
-        case ScrollDirection.idle:
-          break;
-      }
-    }
-    return false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: AppBar(
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: onScrollNotification,
-        child: NavigationScreen(iconList[_bottomNavIndex]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(
-          Icons.brightness_3,
-          color: Colors.grey,
-        ),
-        onPressed: () {
-          _fabAnimationController.reset();
-          _borderRadiusAnimationController.reset();
-          _borderRadiusAnimationController.forward();
-          _fabAnimationController.forward();
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-        itemCount: iconList.length,
-        tabBuilder: (int index, bool isActive) {
-          final color = isActive ? Colors.red : Colors.green;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                iconList[index],
-                size: 24,
-                color: color,
-              ),
-              const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: AutoSizeText(
-                  "brightness $index",
-                  maxLines: 1,
-                  style: TextStyle(color: color),
-                  group: autoSizeGroup,
-                ),
-              )
-            ],
-          );
-        },
-        backgroundColor: Colors.red,
-        activeIndex: _bottomNavIndex,
-        splashColor: Colors.green,
-        notchAndCornersAnimation: borderRadiusAnimation,
-        splashSpeedInMilliseconds: 300,
-        notchSmoothness: NotchSmoothness.defaultEdge,
-        gapLocation: GapLocation.center,
-        leftCornerRadius: 32,
-        rightCornerRadius: 32,
-        onTap: (index) => setState(() => _bottomNavIndex = index),
-        hideAnimationController: _hideBottomBarAnimationController,
-        shadow: const BoxShadow(
-          offset: Offset(0, 1),
-          blurRadius: 12,
-          spreadRadius: 0.5,
-          color: Colors.green,
-        ),
-      ),
-    );
-  }
-}
-
-class NavigationScreen extends StatefulWidget {
-  final IconData iconData;
-
-  const NavigationScreen(this.iconData, {super.key});
-
-  @override
-  _NavigationScreenState createState() => _NavigationScreenState();
-}
-
-class _NavigationScreenState extends State<NavigationScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> animation;
-
-  @override
-  void didUpdateWidget(NavigationScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.iconData != widget.iconData) {
-      _startAnimation();
-    }
-  }
-
-  @override
-  void initState() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn,
-    );
-    _controller.forward();
-    super.initState();
-  }
-
-  _startAnimation() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn,
-    );
-    _controller.forward();
-  }
+class _AnimatedBarExampleState extends State<AnimatedBarExample> {
+  int selected = 0;
+  bool heart = false;
+  final controller = PageController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: ListView(
-        children: [
-          const SizedBox(height: 64),
-          Center(
-            child: CircularRevealAnimation(
-              animation: animation,
-              centerOffset: const Offset(80, 80),
-              maxRadius: MediaQuery.of(context).size.longestSide * 1.1,
-              child: Icon(
-                widget.iconData,
-                color: Colors.green,
-                size: 160,
-              ),
+    return Scaffold(
+      extendBody: true, // To make floating action button notch transparent
+
+      bottomNavigationBar: StylishBottomBar(
+        option: DotBarOptions(
+          dotStyle: DotStyle.tile,
+        ),
+        items: [
+          BottomBarItem(
+            icon: const Icon(
+              Icons.house_outlined,
             ),
+            selectedIcon: const Icon(Icons.house_rounded),
+            selectedColor: AppColors.primaryColor,
+            unSelectedColor: Colors.grey,
+            title: const Text('Home'),
+            badge: const Text('9+'),
+            showBadge: true,
+            badgeColor: AppColors.primaryColor,
+            badgePadding: const EdgeInsets.only(left: 4, right: 4),
+          ),
+          BottomBarItem(
+            icon: const Icon(Icons.wifi_protected_setup_sharp),
+            selectedIcon: const Icon(Icons.wifi_protected_setup_sharp),
+            selectedColor: AppColors.primaryColor,
+            title: const Text('Transaction'),
+          ),
+          BottomBarItem(
+            icon: const Icon(
+              Icons.pie_chart,
+            ),
+            selectedIcon: const Icon(
+              Icons.pie_chart,
+            ),
+            selectedColor: AppColors.primaryColor,
+            title: const Text('Budget'),
+          ),
+          BottomBarItem(
+            icon: const Icon(
+              Icons.person,
+            ),
+            selectedIcon: const Icon(
+              Icons.person,
+            ),
+            selectedColor: Colors.deepPurple,
+            title: const Text('Profile'),
           ),
         ],
+        hasNotch: true,
+        fabLocation: StylishBarFabLocation.center,
+        currentIndex: selected,
+        notchStyle: NotchStyle.circle,
+        onTap: (index) {
+          if (index == selected) return;
+          controller.jumpToPage(index);
+          setState(() {
+            selected = index;
+          });
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            heart = !heart;
+          });
+        },
+        backgroundColor: AppColors.primaryColor,
+        shape: const CircleBorder(), // Ensures the button is circular
+        child: Icon(
+          heart ? Icons.cancel_outlined : CupertinoIcons.add,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: SafeArea(
+        child: PageView(
+          controller: controller,
+          children: [
+            HomeScreen(),
+            const Center(child: Text('Star')),
+            const Center(child: Text('Style')),
+            const Center(child: Text('Profile')),
+          ],
+        ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(const BottomNav());
 }
