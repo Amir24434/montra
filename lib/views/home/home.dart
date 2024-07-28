@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                       height: 50,
                       width: double.infinity,
                       decoration: const BoxDecoration(
-                        color: Colors.green,
+                        color: AppColors.bgColor2,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Padding(
@@ -99,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               child: const Icon(
                                 Icons.badge,
-                                color: Colors.green,
+                                color: AppColors.bgColor2,
                               ),
                             ),
                             SizedBox(
@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                       height: 50,
                       width: double.infinity,
                       decoration: const BoxDecoration(
-                        color: Colors.red,
+                        color: AppColors.bgColor1,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
                       child: Padding(
@@ -148,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               child: const Icon(
                                 Icons.badge,
-                                color: Colors.red,
+                                color: AppColors.bgColor1,
                               ),
                             ),
                             SizedBox(

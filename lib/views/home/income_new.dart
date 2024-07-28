@@ -10,9 +10,9 @@ class NewIncomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: AppColors.bgColor2,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.bgColor2,
         leading: IconButton(
           onPressed: () {},
           icon: const Icon(
@@ -47,13 +47,30 @@ class NewIncomeScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                Text(
-                  "\$0",
+                TextField(
                   style: TextStyle(
-                    fontSize: 67,
+                    fontSize:
+                        67, // Set the font size of the entered text to 67px
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
+                  decoration: InputDecoration(
+                    hintText: '0',
+                    hintStyle: TextStyle(
+                      fontSize:
+                          67, // Set the font size of the hint text to 67px
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    prefixText: '\$',
+                    prefixStyle: TextStyle(
+                      fontSize:
+                          67, // Set the font size of the prefix text to 67px
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  keyboardType: TextInputType.number,
                 ),
               ],
             ),

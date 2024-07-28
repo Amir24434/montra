@@ -47,6 +47,9 @@ dependencies:
   circular_reveal_animation: ^2.0.1
   auto_size_text: ^3.0.0
   stylish_bottom_bar: ^1.1.0
+  flutter_camera: ^1.0.0
+  image_picker: ^1.1.2
+  file_picker: ^8.0.6
 
 dev_dependencies:
   flutter_test:
